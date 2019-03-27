@@ -81,6 +81,7 @@ static int cmd_help(char *args) {
 static int cmd_si(char *args){
 	char *arg=strtok(NULL," ");
 	int n=0;
+	if(arg==NULL) arg="0";
 	sscanf(arg,"%d",&n);
 	if(n==0) cpu_exec(1);
 	if(n==-1) cpu_exec(-1);
