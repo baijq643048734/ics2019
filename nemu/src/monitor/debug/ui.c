@@ -82,7 +82,7 @@ static int cmd_si(char *args){
 	char *arg=strtok(NULL," ");
 	int n;
 	sscanf(arg,"%d",&n);
-	if(arg==NULL) n=1;
+	if(arg==NULL) sscanf("1","%d",&n);
 	if(n==-1) cpu_exec(-1);
 	while(n>0){
 		cpu_exec(1);
