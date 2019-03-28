@@ -131,13 +131,13 @@ static int cmd_x(char *args){
 		printf("%#010x ",addr_1);
 		printf("... ");
 		hex=(addr_1&0x000000FF);
-		printf("%#010x ",hex);
+		printf("%02x ",hex);
 		hex=(addr_1&0x0000FF00) >> 8;
-		printf("%#010x ",hex);
+		printf("%02x ",hex);
 		hex=(addr_1&0x00FF0000) >> 16;
-		printf("%#010x ",hex);
+		printf("%02x ",hex);
 		hex=(addr_1&0xFF000000) >> 24;
-		printf("%#010x ",hex);
+		printf("%02x ",hex);
 		printf("\n");
 		addr+=4;
 	}
