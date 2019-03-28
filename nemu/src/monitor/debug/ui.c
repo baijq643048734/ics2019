@@ -119,14 +119,15 @@ static int cmd_x(char *args){
 	char *arg_1=strtok(NULL," ");
 	char *arg_2=strtok(NULL," ");
 	int len;
-	vaddr_t addr;
+	vaddr_t addr,addr_1;
 	int i;
 	sscanf(arg_1,"%d",&len);
 	sscanf(arg_2,"%x",&addr);
-	printf("Address	Dword block	...	Byte sequence\n");
+	printf("Address    Dword block ... Byte sequence\n");
 	for(i=0;i<len;i++){
-		printf("%#010x ",addr);
-		printf("%#010x ",vaddr_read(addr,4));
+		addr_1=vaddr_read(addr,4);
+		printf("%#010x  ",addr);
+		printf("%#010x ",addr_1);
 		printf("... ");
 		printf("\n");
 		addr+=4;
