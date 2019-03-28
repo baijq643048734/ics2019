@@ -118,9 +118,10 @@ static int cmd_info(char *args){
 static int cmd_x(char *args){
 	char *arg_1=strtok(NULL," ");
 	char *arg_2=strtok(NULL," ");
+	int i;
 	int len;
 	vaddr_t addr,addr_1;
-	int i;
+	int hex;
 	sscanf(arg_1,"%d",&len);
 	sscanf(arg_2,"%x",&addr);
 	printf("Address    Dword block ... Byte sequence\n");
@@ -129,6 +130,8 @@ static int cmd_x(char *args){
 		printf("%#010x  ",addr);
 		printf("%#010x ",addr_1);
 		printf("... ");
+		hex=(addr_1&0xFF000000) >> 24;
+		printf("%x ",hex);
 		printf("\n");
 		addr+=4;
 	}
