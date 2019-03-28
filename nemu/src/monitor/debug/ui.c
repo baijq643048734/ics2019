@@ -123,12 +123,14 @@ static int cmd_x(char *args){
 	int i;
 	sscanf(arg_1,"%d",&len);
 	sscanf(arg_2,"%x",&addr);
-	printf("0x%x:",addr);
+	printf("Address	Dword block	...	Byte sequence\n");
 	for(i=0;i<len;i++){
-		printf("%x ",vaddr_read(addr,4));
+		printf("%#010x ",addr);
+		printf("%#010x ",vaddr_read(addr,4));
+		printf("... ");
+		printf("\n");
 		addr+=4;
 	}
-	printf("\n");
 	return 1;
 }
 
