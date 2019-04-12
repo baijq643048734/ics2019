@@ -13,7 +13,8 @@ enum {
   TK_REGISTER, TK_LP,
   TK_RP, TK_NOT_EQ,
   TK_AND, TK_OR,
-  TK_DEREF, TK_NOT
+  TK_DEREF, TK_NOT,
+  TK_NEGATIVE
 
   /* TODO: Add more token types */
 
@@ -36,7 +37,7 @@ static struct rule {
   {"\\$e(ax|bx|cx|dx|sp|bp|si|di|ip)", TK_REGISTER},	// register
   {"\\(", TK_LP},										// left parentheses
   {"\\)", TK_RP},										// right parentheses
-  {"\\-", '-'},											// minus
+  {"\\-", '-'},											// minus & negative
   {"\\*", '*'},											// multiply & dereference
   {"\\/", '/'},											// divide
   {"!=", TK_NOT_EQ},									// not equal
@@ -112,6 +113,7 @@ static bool make_token(char *e) {
 			case TK_OR:
 			case TK_NOT:
 			case TK_DEREF:
+			case TK_NEGATIVE:
 				tokens[nr_token].type = rules[i].token_type;
 				nr_token++;
 				break;
@@ -166,6 +168,7 @@ int find_dominated_op(int p ,int q){
 	int TK_DIV_L = 4;
 	int TK_NOT_L = 5;
 	int TK_DEREF_L = 5;
+	int TK_NEGATIVE_L = 6;
 	int op = 0;
 	int opsign = 65535;
 	int i;
@@ -216,6 +219,10 @@ int find_dominated_op(int p ,int q){
 			else if(tokens[i].type == TK_DEREF && opsign > TK_DEREF_L){
 				op=i;
 				opsign = TK_DEREF_L;
+			}
+			else if(tokens[i].type == TK_NEGATIVE && opsign > TK_NEGATIVE_L){
+				op=i;
+				opsign = TK_NEGATIVE_L;
 			}
 		}
 	}
@@ -285,6 +292,8 @@ uint32_t eval(int p,int q){
 				return !val2;
 			case TK_DEREF:
 				return vaddr_read(val2,4);
+			case TK_NEGATIVE:
+				return -1*val2;
 			default:
 				printf("Operator Wrong!\n");
 				assert(0);
@@ -303,8 +312,12 @@ uint32_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   
   for(int i = 0; i<nr_token;i++){
-	  if(tokens[i].type == '*' && (i==0 || (tokens[i-1].type != TK_16_NUM && tokens[i-1].type != TK_10_NUM && tokens[i-1].type != TK_RP)))
+	  if(tokens[i].type == '*' && (i==0 || (tokens[i-1].type != TK_16_NUM && tokens[i-1].type != TK_10_NUM && tokens[i-1].type != TK_RP))){
 		  tokens[i].type = TK_DEREF;
+	  }
+	  if(tokens[i].type == '-' && (i==0 || (tokens[i-1].type != TK_16_NUM && tokens[i-1].type != TK_10_NUM && tokens[i-1].type != TK_RP))){
+		  tokens[i].type = TK_NEGATIVE;
+	  }
   }
   *success = true;
   return eval(0,nr_token-1);
