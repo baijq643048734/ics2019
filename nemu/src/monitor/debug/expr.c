@@ -29,8 +29,8 @@ static struct rule {
   {" +", TK_NOTYPE},									// spaces
   {"\\+", '+'},											// plus
   {"==", TK_EQ},										// equal
-  {"[0-9]+", TK_10_NUM},								// decimal number
   {"0[xX][0-9a-fA-F]+", TK_16_NUM},						// hexadecimal number
+  {"[0-9]+", TK_10_NUM},								// decimal number
   {"\\$e(ax|bx|cx|dx|sp|bp|si|di|ip)", TK_REGISTER},	// register
   {"\\(", TK_LP},										// left parentheses
   {"\\)", TK_RP},										// right parentheses
