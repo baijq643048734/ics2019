@@ -74,13 +74,6 @@ typedef struct token {
 Token tokens[32];
 int nr_token;
 
-static bool is_dereference(){
-	int n = tokens[nr_token-1].type;
-	if(n == TK_10_NUM || n == TK_16_NUM || n == TK_REGISTER || n == TK_RP)
-		return false;
-	else return true;
-}
-
 static bool make_token(char *e) {
   int position = 0;
   int i;
@@ -109,6 +102,7 @@ static bool make_token(char *e) {
 				break;
 			case '+':
 			case '-':
+			case '*':
 			case '/':
 			case TK_EQ:
 			case TK_LP:
@@ -117,13 +111,9 @@ static bool make_token(char *e) {
 			case TK_AND:
 			case TK_OR:
 			case TK_NOT:
+			case TK_DEREF:
 				tokens[nr_token].type = rules[i].token_type;
 				nr_token++;
-				break;
-			case '*':
-				if(tokens[nr_token].type == 0 || is_dereference())
-					tokens[nr_token].type = TK_DEREF;
-				else tokens[nr_token].type = '*';
 				break;
 			case TK_16_NUM:
 			case TK_10_NUM:
@@ -308,6 +298,10 @@ uint32_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   
-  *success =true;
+  for(int i = 0; i<nr_token;i++){
+	  if(tokens[i].type == '*' && (i==0 || (tokens[i-1].type != TK_16_NUM && tokens[i-1].type != TK_10_NUM && tokens[i-1].type != TK_RP)))
+		  tokens[i].type = TK_DEREF;
+  }
   return eval(0,nr_token-1);
 }
+
