@@ -144,20 +144,33 @@ bool check_parentheses(int p,int q){
 }
 
 int find_dominated_op(int p ,int q){
-	int level = 0;
+	int P_level = 0;
+	int Equal_L = 1;
+	int Plus_Minus_L = 2;
+	int Multi_Div_L = 3;
 	int op = 0;
+	int opsign = 0;
 	int i;
 	for(i=p;i<=q;i++){
 		if(tokens[i].type == TK_LP){
-			level++;
+			P_level++;
 		}
 		else if(tokens[i].type == TK_RP){
-			level--;
+			P_level--;
 		}
-		if(level == 0){
-			if(tokens[i].type == TK_EQ) op=i;
-			else if(tokens[i].type == '+' || tokens[i].type == '-') op=i;
-			else if(tokens[i].type == '*' || tokens[i].type == '/') op=i;
+		if(P_level == 0){
+			if(tokens[i].type == TK_EQ && opsign > Equal_L){
+			   	op = i;
+				opsign = Equal_L;
+			}
+			else if((tokens[i].type == '+' || tokens[i].type == '-') && opsign > Plus_Minus_L){
+			   	op=i;
+				opsign = Plus_Minus_L;
+			}
+			else if((tokens[i].type == '*' || tokens[i].type == '/') && opsign > Multi_Div_L){
+			   	op=i;
+				opsign = Multi_Div_L;
+			}
 		}
 	}
 	return op;
