@@ -146,7 +146,7 @@ static int cmd_x(char *args){
 static int cmd_p(char *args){
 	bool sucess;
 	int result = expr(args , &sucess);
-	if(sucess) printf("%d\n",result);
+	if(sucess) printf("0x%08x %d\n",result,result);
 	return 1;
 }
 
