@@ -149,7 +149,7 @@ int find_dominated_op(int p ,int q){
 	int Plus_Minus_L = 2;
 	int Multi_Div_L = 3;
 	int op = 0;
-	int opsign = 0;
+	int opsign = 65535;
 	int i;
 	for(i=p;i<=q;i++){
 		if(tokens[i].type == TK_LP){
