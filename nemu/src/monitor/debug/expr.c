@@ -3,6 +3,7 @@
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
+#include <string.h>
 #include <sys/types.h>
 #include <regex.h>
 
@@ -130,6 +131,96 @@ static bool make_token(char *e) {
   return true;
 }
 
+bool check_parentheses(int p,int q){
+	if(tokens[p].type !=TK_LP || tokens[q].type !=TK_RP)
+		return false;
+	int sign=0;
+	for(;p<q;p++){
+		if(tokens[p].type == TK_LP) sign++;
+		else if(tokens[p].type == TK_RP) sign--;
+		if(sign == 0) return false;
+	}
+	return true;
+}
+
+int find_dominated_op(int p ,int q){
+	int level = 0;
+	int op = 0;
+	int i;
+	for(i=p;i<=q;i++){
+		if(tokens[i].type == TK_LP){
+			level++;
+		}
+		else if(tokens[i].type == TK_RP){
+			level--;
+		}
+		if(level == 0){
+			if(tokens[i].type == TK_EQ) op=i;
+			else if(tokens[i].type == '+' || tokens[i].type == '-') op=i;
+			else if(tokens[i].type == '*' || tokens[i].type == '/') op=i;
+		}
+	}
+	return op;
+}
+
+uint32_t eval(int p,int q){
+	uint32_t n,val1,val2;
+	if(p > q){
+		printf("Bad expression! \n");
+		assert(0);
+	}
+	else if (p==q){
+		if(tokens[p].type == TK_16_NUM){
+			sscanf(tokens[p].str,"%x",&n);
+			return n;
+		}
+		if(tokens[p].type == TK_10_NUM){
+			sscanf(tokens[p].str,"%d",&n);
+			return n;
+		}
+		if(tokens[p].type == TK_REGISTER){
+			if(strcmp(tokens[p].str,"&eax")==0) return cpu.eax;
+			else if(strcmp(tokens[p].str,"&ebx")==0) return cpu.ebx;
+			else if(strcmp(tokens[p].str,"&ecx")==0) return cpu.ecx;
+			else if(strcmp(tokens[p].str,"&edx")==0) return cpu.edx;
+			else if(strcmp(tokens[p].str,"&esp")==0) return cpu.esp;
+			else if(strcmp(tokens[p].str,"&ebp")==0) return cpu.ebp;
+			else if(strcmp(tokens[p].str,"&esi")==0) return cpu.esi;
+			else if(strcmp(tokens[p].str,"&edi")==0) return cpu.edi;
+			else if(strcmp(tokens[p].str,"&eip")==0) return cpu.eip;
+			else{
+				printf("Register Wrong! \n");
+				assert(0);
+			}
+		}
+	}
+	else if(check_parentheses(p,q) == true){
+		return eval(p+1,q-1);
+	}
+	else{
+		int op = find_dominated_op(p,q);
+		val1 = eval(p,op-1);
+		val2 = eval(op+1,q);
+		switch(tokens[op].type){
+			case '+':
+				return val1 + val2;
+			case '-':
+				return val1 - val2;
+			case '*':
+				return val1 * val2;
+			case '/':
+				return val1 / val2;
+			case TK_EQ:
+				return val1 == val2;
+			default:
+				printf("Operator Wrong!\n");
+				assert(0);
+		}
+	}
+	return 0;
+}
+
+
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -137,7 +228,7 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
-
-  return 0;
+  
+  *success =true;
+  return eval(0,nr_token-1);
 }
