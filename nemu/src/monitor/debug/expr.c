@@ -11,7 +11,9 @@ enum {
   TK_NOTYPE = 256, TK_EQ,
   TK_10_NUM, TK_16_NUM,
   TK_REGISTER, TK_LP,
-  TK_RP
+  TK_RP, TK_NOT_EQ,
+  TK_AND, TK_OR,
+  TK_DEREF, TK_NOT
 
   /* TODO: Add more token types */
 
@@ -35,8 +37,12 @@ static struct rule {
   {"\\(", TK_LP},										// left parentheses
   {"\\)", TK_RP},										// right parentheses
   {"\\-", '-'},											// minus
-  {"\\*", '*'},											// multiply
+  {"\\*", '*'},											// multiply & dereference
   {"\\/", '/'},											// divide
+  {"!=", TK_NOT_EQ},									// not equal
+  {"&&", TK_AND},										// logical and
+  {"||", TK_OR},										// logical or
+  {"!", TK_NOT},										// not
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -68,6 +74,13 @@ typedef struct token {
 Token tokens[32];
 int nr_token;
 
+static bool is_dereference(){
+	int n = tokens[nr_token-1].type;
+	if(n == TK_10_NUM || n == TK_16_NUM || n == TK_REGISTER || n == TK_RP)
+		return false;
+	else return true;
+}
+
 static bool make_token(char *e) {
   int position = 0;
   int i;
@@ -96,13 +109,21 @@ static bool make_token(char *e) {
 				break;
 			case '+':
 			case '-':
-			case '*':
 			case '/':
 			case TK_EQ:
 			case TK_LP:
 			case TK_RP:
+			case TK_NOT_EQ:
+			case TK_AND:
+			case TK_OR:
+			case TK_NOT:
 				tokens[nr_token].type = rules[i].token_type;
 				nr_token++;
+				break;
+			case '*':
+				if(tokens[nr_token].type == 0 || is_dereference())
+					tokens[nr_token].type = TK_DEREF;
+				else tokens[nr_token].type = '*';
 				break;
 			case TK_16_NUM:
 			case TK_10_NUM:
@@ -145,9 +166,16 @@ bool check_parentheses(int p,int q){
 
 int find_dominated_op(int p ,int q){
 	int P_level = 0;
-	int Equal_L = 1;
-	int Plus_Minus_L = 2;
-	int Multi_Div_L = 3;
+	int TK_AND_L = 1;
+	int TK_OR_L = 1;
+	int TK_EQ_L = 2;
+	int TK_NOT_EQ_L = 2;
+	int TK_PLUS_L = 3;
+	int TK_MINUS_L = 3;
+	int TK_MULTI_L = 4;
+	int TK_DIV_L = 4;
+	int TK_NOT_L = 5;
+	int TK_DEREF_L = 5;
 	int op = 0;
 	int opsign = 65535;
 	int i;
@@ -159,17 +187,45 @@ int find_dominated_op(int p ,int q){
 			P_level--;
 		}
 		if(P_level == 0){
-			if(tokens[i].type == TK_EQ && opsign > Equal_L){
+			if(tokens[i].type == TK_EQ && opsign > TK_EQ_L){
 			   	op = i;
-				opsign = Equal_L;
+				opsign = TK_EQ_L;
 			}
-			else if((tokens[i].type == '+' || tokens[i].type == '-') && opsign > Plus_Minus_L){
+			else if(tokens[i].type == '+' && opsign > TK_PLUS_L){
 			   	op=i;
-				opsign = Plus_Minus_L;
+				opsign = TK_PLUS_L;
 			}
-			else if((tokens[i].type == '*' || tokens[i].type == '/') && opsign > Multi_Div_L){
+			else if(tokens[i].type == '-' && opsign > TK_MINUS_L){
+				op=i;
+				opsign = TK_MINUS_L;
+			}
+			else if(tokens[i].type == '*' && opsign > TK_MULTI_L){
 			   	op=i;
-				opsign = Multi_Div_L;
+				opsign = TK_MULTI_L;
+			}
+			else if(tokens[i].type == '/' && opsign > TK_DIV_L){
+				op=i;
+				opsign = TK_DIV_L;
+			}
+			else if(tokens[i].type == TK_NOT_EQ && opsign > TK_NOT_EQ_L){
+				op=i;
+				opsign = TK_NOT_EQ_L;
+			}
+			else if(tokens[i].type == TK_AND && opsign > TK_AND_L){
+				op=i;
+				opsign = TK_AND_L;
+			}
+			else if(tokens[i].type == TK_OR && opsign > TK_OR_L){
+				op=i;
+				opsign = TK_OR_L;
+			}
+			else if(tokens[i].type == TK_NOT && opsign > TK_NOT_L){
+				op=i;
+				opsign = TK_NOT_L;
+			}
+			else if(tokens[i].type == TK_DEREF && opsign > TK_DEREF_L){
+				op=i;
+				opsign = TK_DEREF_L;
 			}
 		}
 	}
@@ -225,6 +281,16 @@ uint32_t eval(int p,int q){
 				return val1 / val2;
 			case TK_EQ:
 				return val1 == val2;
+			case TK_NOT_EQ:
+				return val1 != val2;
+			case TK_AND:
+				return val1 && val2;
+			case TK_OR:
+				return val1 || val2;
+			case TK_NOT:
+				return !val2;
+			case TK_DEREF:
+				return vaddr_read(val2,4);
 			default:
 				printf("Operator Wrong!\n");
 				assert(0);
