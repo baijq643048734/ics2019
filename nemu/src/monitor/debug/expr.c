@@ -223,7 +223,7 @@ int find_dominated_op(int p ,int q){
 }
 
 uint32_t eval(int p,int q){
-	uint32_t n,val1,val2;
+	uint32_t n;
 	if(p > q){
 		printf("Bad expression! \n");
 		assert(0);
@@ -258,7 +258,11 @@ uint32_t eval(int p,int q){
 	}
 	else{
 		int op = find_dominated_op(p,q);
-		val1 = eval(p,op-1);
+		int val1=0;
+		int val2=0;
+		if(p < op){
+			val1 = eval(p,op-1);
+		}
 		val2 = eval(op+1,q);
 		switch(tokens[op].type){
 			case '+':
