@@ -89,11 +89,34 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-
+		int j;
         switch (rules[i].token_type) {
-          default: TODO();
+			case TK_NOTYPE:
+				break;
+			case '+':
+			case '-':
+			case '*':
+			case '/':
+			case TK_EQ:
+			case TK_LP:
+			case TK_RP:
+				tokens[nr_token].type = rules[i].token_type;
+				nr_token++;
+				break;
+			case TK_16_NUM:
+			case TK_10_NUM:
+			case TK_REGISTER:
+				for(j=0;j<substr_len;j++){
+					tokens[nr_token].str[j] = *(substr_start + j);
+				}
+				tokens[nr_token].str[j]='\0';
+				tokens[nr_token].type = rules[i].token_type;
+				nr_token++;
+				break;
+			default:
+				Log("Match failed!\n");
+				assert(0);
         }
-
         break;
       }
     }
