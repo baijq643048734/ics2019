@@ -89,10 +89,7 @@ static int cmd_si(char *args){
 	sscanf(arg,"%d",&n);
 	if(n==0) cpu_exec(1);
 	if(n<0) cpu_exec(-1);
-	while(n>0){
-		cpu_exec(1);
-		n--;
-	}
+	if(n>0)	cpu_exec(n);
 	return 1;
 }
 
