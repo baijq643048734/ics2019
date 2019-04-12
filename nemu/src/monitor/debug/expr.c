@@ -41,7 +41,7 @@ static struct rule {
   {"\\/", '/'},											// divide
   {"!=", TK_NOT_EQ},									// not equal
   {"&&", TK_AND},										// logical and
-  {"||", TK_OR},										// logical or
+  {"\\|\\|", TK_OR},									// logical or
   {"!", TK_NOT},										// not
 };
 
