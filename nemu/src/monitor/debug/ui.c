@@ -122,7 +122,12 @@ static int cmd_x(char *args){
 	vaddr_t addr,addr_1;
 	int hex;
 	sscanf(arg_1,"%d",&len);
-	sscanf(arg_2,"%x",&addr);
+	if(arg_2[0]=='0') sscanf(arg_2,"%x",&addr);
+	else if(arg_2[0]=='$'){
+		bool success;
+		int result=expr(arg_2,&success);
+		addr = result;
+	}
 	printf("Address    Dword block ... Byte sequence\n");
 	for(i=0;i<len;i++){
 		addr_1=vaddr_read(addr,4);
@@ -144,9 +149,9 @@ static int cmd_x(char *args){
 }
 
 static int cmd_p(char *args){
-	bool sucess;
-	int result = expr(args , &sucess);
-	if(sucess) printf("0x%08x %d\n",result,result);
+	bool success;
+	int result = expr(args , &success);
+	if(success) printf("0x%08x %d\n",result,result);
 	return 1;
 }
 
