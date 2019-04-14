@@ -30,8 +30,23 @@ WP* new_wp(){
 	return head;
 }
 
-//void free_wp(WP *wp){
-//	WP *p= 
+void free_wp(WP *wp){
+	WP *p=head;
+	if(wp == head){
+		p = head ->next;
+		head -> next = free_;
+		free_ = head;
+		head = p;
+	}
+	else{
+		WP *p1,*p2;
+		for(p1=head,p2=head->next;p2!=wp;p1=p1->next,p2=p2->next);
+		p1 -> next = wp -> next;
+		wp -> next = free_;
+		free_ = wp;
+	}
+}
+
 /* TODO: Implement the functionality of watchpoint */
 
 
