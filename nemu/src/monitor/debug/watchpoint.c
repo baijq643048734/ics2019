@@ -3,7 +3,7 @@
 
 #define NR_WP 32
 
-//static WP wp_pool[NR_WP];
+static WP wp_pool[NR_WP];
 static WP *head, *free_;
 
 void init_wp_pool() {
@@ -30,17 +30,18 @@ WP* new_wp(){
 	return head;
 }
 
-void free_wp(WP *wp){
-	WP *p=head;
-	if(wp == head){
+void free_wp(int num){
+	WP *p;
+	if(num == head -> NO){
 		p = head ->next;
 		head -> next = free_;
 		free_ = head;
 		head = p;
 	}
 	else{
-		WP *p1,*p2;
-		for(p1=head,p2=head->next;p2!=wp;p1=p1->next,p2=p2->next);
+		WP *p1,*p2,*wp;
+		for(p1=head,p2=head->next;p2->NO!=num;p1=p1->next,p2=p2->next);
+		wp = &wp_pool[num];
 		p1 -> next = wp -> next;
 		wp -> next = free_;
 		free_ = wp;

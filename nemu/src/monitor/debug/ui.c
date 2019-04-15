@@ -178,8 +178,7 @@ static int cmd_w(char *args){
 static int cmd_d(char *args){
 	int num;
 	sscanf(args,"%d",&num);
-	WP *p= &wp_pool[num];
-	free_wp(p);
+	free_wp(num);
 	printf("Watchpoint %d deleted\n", num);
 	return 1;
 }
