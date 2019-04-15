@@ -50,11 +50,20 @@ void free_wp(int num){
 
 void info_w(){
 	printf("NO Old Value  Expr\n");
-	WP *p=head;
-	for(;p!=NULL;p=p->next){
-		printf("%d ",p->NO);
+	if(head == NULL){
+		printf("There is no watchpoint in pool!\n");
+		assert(0);
+	}
+	WP *p=head,*q;
+	for(q=head;q!=NULL;q=q->next);
+	while(q != head->next){
+	while(p->next != q){
+		p=p->next;
+	}
+		printf("%d  ",p->NO);
 		printf("0x%08x  ",p->old_val);
 		printf("%s\n",p->expr);
+		q=p;
 	}
 }
 
