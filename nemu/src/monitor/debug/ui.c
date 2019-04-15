@@ -115,6 +115,9 @@ static int cmd_info(char *args){
 			}
 		}
 	}
+	else if(strcmp(arg,"w")==0){
+		info_w();
+	}
 	return 1;
 }
 

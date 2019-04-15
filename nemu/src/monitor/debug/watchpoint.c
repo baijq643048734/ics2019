@@ -48,6 +48,16 @@ void free_wp(int num){
 	}
 }
 
+void info_w(){
+	printf("NO Old Value  Expr\n");
+	WP *p=head;
+	for(;p!=NULL;p=p->next){
+		printf("%d ",p->NO);
+		printf("0x%08x  ",p->old_val);
+		printf("%s\n",p->expr);
+	}
+}
+
 /* TODO: Implement the functionality of watchpoint */
 
 
