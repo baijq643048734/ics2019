@@ -1,6 +1,7 @@
 #include "monitor/monitor.h"
 #include "monitor/expr.h"
 #include "monitor/watchpoint.h"
+#include "watchpoint.c"
 #include "nemu.h"
 
 #include <stdlib.h>
@@ -42,7 +43,7 @@ static int cmd_info(char *args);
 static int cmd_x(char *args);
 static int cmd_p(char *args);
 static int cmd_w(char *args);
-//static int cmd_d(char *args);
+static int cmd_d(char *args);
 
 static struct {
   char *name;
@@ -57,7 +58,7 @@ static struct {
   { "x","Scan memory", cmd_x},
   { "p","Expression evaluation", cmd_p},
   { "w","Set a watchpoint", cmd_w},
-//  { "d","Delete a watchpoint", cmd_d},
+  { "d","Delete a watchpoint", cmd_d},
 
   /* TODO: Add more commands */
 
@@ -175,6 +176,14 @@ static int cmd_w(char *args){
 	return 1;
 }
 
+static int cmd_d(char *args){
+	int num;
+	sscanf(args,"%d",&num);
+	WP *p= &wp_pool[num];
+	free_wp(p);
+	printf("Watchpoint %d deleted\n", num);
+	return 1;
+}
 
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
