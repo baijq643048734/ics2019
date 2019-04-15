@@ -57,11 +57,11 @@ void info_w(){
 	WP *p=head,*q;
 	for(q=head;q!=NULL;q=q->next);
 	while(q != head->next){
-	while(p->next != q){
-		p=p->next;
-	}
+		while(p->next != q){
+			p=p->next;
+		}
 		printf("%d  ",p->NO);
-		printf("0x%08x  ",p->old_val);
+		printf("0x%08x ",p->old_val);
 		printf("%s\n",p->expr);
 		q=p;
 	}
