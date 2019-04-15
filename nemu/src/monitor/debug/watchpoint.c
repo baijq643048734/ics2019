@@ -54,16 +54,11 @@ void info_w(){
 		assert(0);
 	}
 	printf("NO Old Value  Expr\n");
-	WP *p=head,*q;
-	for(q=head;q!=NULL;q=q->next);
-	while(q != head->next){
-		while(p->next != q){
-			p=p->next;
-		}
+	WP *p=head;
+	for(;p!=NULL;p=p->next){
 		printf("%d  ",p->NO);
 		printf("0x%08x ",p->old_val);
 		printf("%s\n",p->expr);
-		q=p;
 	}
 }
 
