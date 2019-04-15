@@ -171,7 +171,7 @@ static int cmd_w(char *args){
 	strcpy(p -> expr , args);
 	printf("expr = %s\n", p -> expr);
 	p -> old_val = result ;
-	printf("old value = %x\n",p -> old_val);
+	printf("old value = 0x%08x\n",p -> old_val);
 	return 1;
 }
 
