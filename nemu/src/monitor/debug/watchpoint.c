@@ -73,7 +73,7 @@ bool delete_watchpoint(int NO){
 	return true;
 }
 
-void info_w(){
+void list_watchpoint(void){
 	if(head == NULL){
 		printf("There is no watchpoint in pool!\n");
 		assert(0);
