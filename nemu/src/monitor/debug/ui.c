@@ -169,9 +169,7 @@ static int cmd_w(char *args){
 static int cmd_d(char *args){
 	int num;
 	sscanf(args,"%d",&num);
-	free_wp(num);
-	printf("Watchpoint %d deleted\n", num);
-	return 1;
+	return delete_watchpoint(num);
 }
 
 void ui_mainloop(int is_batch_mode) {

@@ -63,6 +63,16 @@ int set_watchpoint(char *e){
 	return 1;
 }
 
+bool delete_watchpoint(int NO){
+	if(head == NULL){
+		printf("There is no watchpoint!\n");
+		return false;
+	}
+	free_wp(NO);
+	printf("Watchpoint %d deleted\n", NO);
+	return true;
+}
+
 void info_w(){
 	if(head == NULL){
 		printf("There is no watchpoint in pool!\n");
