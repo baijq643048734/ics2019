@@ -163,19 +163,7 @@ static int cmd_p(char *args){
 }
 
 static int cmd_w(char *args){
-	bool success;
-	int result = expr(args,&success);
-	if(success == false){
-		printf("Expr is wrong!\n");
-		return 0;
-	}
-	WP *p = new_wp();
-	printf("Set watchpoint #%d\n",p -> NO);
-	strcpy(p -> expr , args);
-	printf("expr = %s\n", p -> expr);
-	p -> old_val = result ;
-	printf("old value = 0x%08x\n",p -> old_val);
-	return 1;
+	return set_watchpoint(args);
 }
 
 static int cmd_d(char *args){

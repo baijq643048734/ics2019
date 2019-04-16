@@ -48,6 +48,21 @@ void free_wp(int num){
 	}
 }
 
+int set_watchpoint(char *e){
+	bool success;
+	int result = expr(e,&success);
+	if(success == false){
+		printf("Expr is wrong!\n");
+	}
+	WP *p = new_wp();
+	printf("Set watchpoint #%d\n",p -> NO);
+	strcpy(p -> expr,e);
+	printf("expr = %s\n", p -> expr);
+	p -> old_val = result;
+	printf("old value = 0x%08x\n",p -> old_val);
+	return 1;
+}
+
 void info_w(){
 	if(head == NULL){
 		printf("There is no watchpoint in pool!\n");
