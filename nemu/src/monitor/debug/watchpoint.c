@@ -87,6 +87,26 @@ void list_watchpoint(void){
 	}
 }
 
+WP* scan_watchpoint(void){
+	if(head == NULL){
+		printf("There is no watchpoint to scan!\n");
+		assert(0);
+	}
+	bool success;
+//	bool is_hit = false;
+	WP *p=head;
+	for(;p!=NULL;p=p->next){
+		p -> new_val = expr(p -> expr,&success);
+		if(p -> new_val != p -> old_val){
+			printf("Hit watchpoint %d at address 0x%08x\n",p->NO,p->old_val);
+			p->old_val = p->new_val;
+			return p;
+//			is_hit = true;
+		}
+	}
+	return NULL;
+}
+
 /* TODO: Implement the functionality of watchpoint */
 
 
