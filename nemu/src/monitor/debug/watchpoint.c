@@ -88,10 +88,6 @@ void list_watchpoint(void){
 }
 
 WP* scan_watchpoint(void){
-	if(head == NULL){
-		printf("There is no watchpoint to scan!\n");
-		assert(0);
-	}
 	bool success;
 //	bool is_hit = false;
 	WP *p=head;
