@@ -29,9 +29,9 @@ void cpu_exec(uint64_t n) {
     exec_wrapper(print_flag);
 
 #ifdef DEBUG
+	nemu_state = NEMU_STOP;
 	WP *p = scan_watchpoint();
 	if(p!= NULL){
-		nemu_state = NEMU_STOP;
 		printf("expr      = %s\n",p->expr);
 		printf("old value = 0x%08x\n",p->old_val);
 		p->old_val = p->new_val;
