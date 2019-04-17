@@ -26,7 +26,6 @@ void cpu_exec(uint64_t n) {
   for (; n > 0; n --) {
     /* Execute one instruction, including instruction fetch,
      * instruction decode, and the actual execution. */
-	nemu_state = NEMU_STOP;
     exec_wrapper(print_flag);
 
 #ifdef DEBUG
@@ -37,6 +36,7 @@ void cpu_exec(uint64_t n) {
 		p->old_val = p->new_val;
 		printf("new value = 0x%08x\n",p->new_val);
 		printf("program paused\n");
+		nemu_state = NEMU_STOP;
 	}
     /* TODO: check watchpoints here. */
 
