@@ -33,6 +33,7 @@ void cpu_exec(uint64_t n) {
 	if(p!= NULL){
 		printf("expr      = %s\n",p->expr);
 		printf("old value = 0x%08x\n",p->old_val);
+		p->old_val = p->new_val;
 		printf("new value = 0x%08x\n",p->new_val);
 		printf("program paused\n");
 		nemu_state = NEMU_STOP;

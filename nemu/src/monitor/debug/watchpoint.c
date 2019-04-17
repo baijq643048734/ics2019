@@ -96,7 +96,7 @@ WP* scan_watchpoint(void){
 		if(result!= p -> old_val){
 			p->new_val = result;
 			printf("Hit watchpoint %d at address 0x%08x\n",p->NO,p->old_val);
-			p->old_val = result;
+//			p->old_val = result;
 			return p;
 		}
 	}
