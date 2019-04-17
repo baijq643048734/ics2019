@@ -29,10 +29,11 @@ void cpu_exec(uint64_t n) {
     exec_wrapper(print_flag);
 
 #ifdef DEBUG
-	if(scan_watchpoint() != NULL){
-		printf("expr      = %s\n",scan_watchpoint()->expr);
-		printf("old value = 0x%08x\n",scan_watchpoint()->old_val);
-		printf("new value = 0x%08x\n",scan_watchpoint()->new_val);
+	WP *p = scan_watchpoint();
+	if(p!= NULL){
+		printf("expr      = %s\n",p->expr);
+		printf("old value = 0x%08x\n",p->old_val);
+		printf("new value = 0x%08x\n",p->new_val);
 		printf("program paused\n");
 		nemu_state = NEMU_STOP;
 	}
