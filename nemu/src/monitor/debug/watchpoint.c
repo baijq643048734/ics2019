@@ -91,11 +91,13 @@ WP* scan_watchpoint(void){
 	bool success;
 	WP *p=head;
 	int result;
+	int eip_num;
 	for(;p!=NULL;p=p->next){
 		result = expr(p -> expr,&success);
 		if(result!= p -> old_val){
 			p->new_val = result;
-			printf("Hit watchpoint %d at address 0x%08x\n",p->NO,p->old_val);
+			eip_num = expr("$eip",&success);
+			printf("Hit watchpoint %d at address 0x%08x\n",p->NO,eip_num);
 			return p;
 		}
 	}
