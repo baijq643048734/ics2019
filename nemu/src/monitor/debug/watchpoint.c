@@ -89,7 +89,6 @@ void list_watchpoint(void){
 
 WP* scan_watchpoint(void){
 	bool success;
-//	bool is_hit = false;
 	WP *p=head;
 	int result;
 	for(;p!=NULL;p=p->next){
@@ -97,8 +96,8 @@ WP* scan_watchpoint(void){
 		if(result!= p -> old_val){
 			p->new_val = result;
 			printf("Hit watchpoint %d at address 0x%08x\n",p->NO,p->old_val);
-			printf("666\n");
-			p->old_val = result;
+//			printf("666\n");
+//			p->old_val = result;
 			return p;
 //			is_hit = true;
 		}
