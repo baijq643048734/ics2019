@@ -149,7 +149,44 @@ void difftest_step(uint32_t eip) {
 
   // TODO: Check the registers state with QEMU.
   // Set `diff` as `true` if they are not the same.
-  TODO();
+  union gdb_regs nem;
+  regcpy_from_nemu(nem);
+  if(r.eax != nem.eax){
+	  diff =true;
+	  printf("eax has changed! qemu eax:0x%08x,nemu eax:0x%08x\n",r.eax,nem.eax);
+  }
+  if(r.ebx != nem.ebx){
+	  diff =true;
+	  printf("ebx has changed! qemu ebx:0x%08x,nemu ebx:0x%08x\n",r.ebx,nem.ebx);
+  }
+  if(r.ecx != nem.ecx){
+	  diff =true;
+	  printf("ecx has changed! qemu ecx:0x%08x,nemu ecx:0x%08x\n",r.ecx,nem.ecx);
+  }
+  if(r.edx != nem.edx){
+	  diff =true;
+	  printf("edx has changed! qemu edx:0x%08x,nemu edx:0x%08x\n",r.edx,nem.edx);
+  }
+  if(r.esp != nem.esp){
+	  diff =true;
+	  printf("esp has changed! qemu esp:0x%08x,nemu esp:0x%08x\n",r.esp,nem.esp);
+  }
+  if(r.ebp != nem.ebp){
+	  diff =true;
+	  printf("ebp has changed! qemu ebp:0x%08x,nemu ebp:0x%08x\n",r.ebp,nem.ebp);
+  }
+ if(r.esi != nem.esi){
+	  diff =true;
+	  printf("esi has changed! qemu esi:0x%08x,nemu esi:0x%08x\n",r.esi,nem.esi);
+ }
+ if(r.edi != nem.edi){
+	  diff =true;
+	  printf("edi has changed! qemu edi:0x%08x,nemu edi:0x%08x\n",r.edi,nem.edi);
+ }
+ if(r.eip != nem.eip){
+      diff =true;
+	  printf("eip has changed! qemu eip:0x%08x,nemu eip:0x%08x\n",r.eip,nem.eip);
+ }
 
   if (diff) {
     nemu_state = NEMU_END;
