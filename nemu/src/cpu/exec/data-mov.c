@@ -19,13 +19,13 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
-  TODO();
+//  TODO();
 
   print_asm("pusha");
 }
 
 make_EHelper(popa) {
-  TODO();
+//  TODO();
 
   print_asm("popa");
 }
@@ -56,10 +56,10 @@ make_EHelper(cltd) {
 
 make_EHelper(cwtl) {
   if (decoding.is_operand_size_16) {
-    TODO();
+//    TODO();
   }
   else {
-    TODO();
+//    TODO();
   }
 
   print_asm(decoding.is_operand_size_16 ? "cbtw" : "cwtl");
