@@ -19,13 +19,13 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
-//  TODO();
+  TODO();
 
   print_asm("pusha");
 }
 
 make_EHelper(popa) {
-//  TODO();
+  TODO();
 
   print_asm("popa");
 }
