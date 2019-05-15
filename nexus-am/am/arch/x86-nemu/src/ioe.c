@@ -39,7 +39,8 @@ void _draw_sync() {
 
 int _read_key() {
 	int key=inl(0x60);
-	if(inb(0x64)==0x1){
+	int status=inb(0x64);
+	if(status==0x1){
 		return key;
 	}
   return _KEY_NONE;
