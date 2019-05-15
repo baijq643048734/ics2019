@@ -45,3 +45,5 @@ make_EHelper(nop);
 make_EHelper(call_rm);
 make_EHelper(jmp_rm);
 make_EHelper(setcc);
+make_EHelper(in);
+make_EHelper(out);
