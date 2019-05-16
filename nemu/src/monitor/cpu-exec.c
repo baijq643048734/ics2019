@@ -7,7 +7,7 @@
  * This is useful when you use the `si' command.
  * You can modify this value as you want.
  */
-#define MAX_INSTR_TO_PRINT 100000
+#define MAX_INSTR_TO_PRINT 1000000000
 
 int nemu_state = NEMU_STOP;
 
