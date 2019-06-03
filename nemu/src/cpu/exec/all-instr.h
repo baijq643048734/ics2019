@@ -50,3 +50,5 @@ make_EHelper(setcc);
 make_EHelper(in);
 make_EHelper(out);
 make_EHelper(rol);
+make_EHelper(int);
+make_EHelper(lidt);

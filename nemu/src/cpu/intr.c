@@ -6,7 +6,23 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
    * That is, use ``NO'' to index the IDT.
    */
 
-  TODO();
+  union{
+	  GateDesc gd;
+	  struct{
+		  uint32_t low,high;
+	  };
+  }item;
+  vaddr_t addr = cpu.idtr.base + NO*8;
+  item.low = vaddr_read(addr,4);
+  item.high = vaddr_read(addr+4,4);
+  
+  rtl_push(&cpu.eflags.value);
+  rtl_push((rtlreg_t *)&cpu.cs);
+  rtl_push(&ret_addr);
+  cpu.eflags.IF=0;
+
+  decoding.jmp_eip = (item.gd.offset_15_0) | ((item.gd.offset_31_16) << 16);
+  decoding.is_jmp = 1;
 }
 
 void dev_raise_intr() {

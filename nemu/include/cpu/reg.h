@@ -45,9 +45,14 @@ typedef union {
 			 uint8_t OF:1;
 			 uint32_t :20;
 		 };
+		uint32_t value;
 	}eflags;
   };
-
+	struct {
+		uint16_t limit;
+		uint32_t base;
+	}idtr;
+	uint16_t cs;
 } CPU_state;
 
 extern CPU_state cpu;
