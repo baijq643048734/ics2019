@@ -45,7 +45,6 @@ typedef union {
 			 uint8_t OF:1;
 			 uint32_t :20;
 		 };
-		uint32_t value;
 	}eflags;
   };
 	struct {
