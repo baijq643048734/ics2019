@@ -1,5 +1,5 @@
 #include "cpu/exec.h"
-
+#include "memory/mmu.h"
 extern void raise_intr(uint8_t NO,vaddr_t ret_addr);
 
 void diff_test_skip_qemu();
