@@ -21,7 +21,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   rtl_push(&ret_addr);
   cpu.eflags.IF=0;
 
-  decoding.jmp_eip = (item.gd.offset_15_0) | ((item.gd.offset_31_16) << 16);
+  decoding.jmp_eip = ((item.gd.offset_15_0 & 0x0000FFFF) | (item.gd.offset_31_16 & 0xFFFF0000));
   decoding.is_jmp = 1;
 }
 
