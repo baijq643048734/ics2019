@@ -16,7 +16,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   item.low = vaddr_read(addr,4);
   item.high = vaddr_read(addr+4,4);
   
-  rtl_push(&cpu.eflags.value);
+  rtl_push(&cpu.eflags.EFLAGS);
   rtl_push((rtlreg_t *)&cpu.cs);
   rtl_push(&ret_addr);
   cpu.eflags.IF=0;
