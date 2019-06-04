@@ -33,6 +33,8 @@ static inline uintptr_t sys_brk(uintptr_t new_brk) {
   return 1;
 }
 
+extern ssize_t fs_write(int fd,const void *buf,size_t len);
+
 _RegSet* do_syscall(_RegSet *r) {
   uintptr_t a[4];
   a[0] = SYSCALL_ARG1(r);
@@ -43,6 +45,9 @@ _RegSet* do_syscall(_RegSet *r) {
 		  break;
 	  case SYS_exit:
 		  _halt(SYSCALL_ARG2(r));
+		  break;
+	  case SYS_write:
+		  SYSCALL_ARG1(r) = fs_write(SYSCALL_ARG2(r),(void *)SYSCALL_ARG3(r),SYSCALL_ARG4(r));
 		  break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
