@@ -29,8 +29,16 @@ int _write(int fd, void *buf, size_t count){
   return _syscall_(SYS_write,fd,(uintptr_t)buf,count);
 }
 
+uint32_t pb = (uint32_t)&end;
 void *_sbrk(intptr_t increment){
-  return (void *)-1;
+	uint32_t pb1 = pb;
+	if(_syscall_(SYS_brk,pb + increment,0,0) == 0){
+	pb += increment;
+	return (void *) pb1;
+	}
+	else{
+	   return (void*)-1;
+	}	   
 }
 
 int _read(int fd, void *buf, size_t count) {
