@@ -2,6 +2,7 @@
 #include "syscall.h"
 #include "fs.h"
 
+extern ssize_t fs_write(int fd,const void *buf,size_t len);
 int mm_brk(uint32_t new_brk);
 
 static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t mode) {
@@ -10,7 +11,7 @@ static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t 
 }
 
 static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
-  TODO();
+  fs_write(fd,(void *)buf,len);
   return 1;
 }
 
@@ -33,7 +34,6 @@ static inline uintptr_t sys_brk(uintptr_t new_brk) {
   return 1;
 }
 
-extern ssize_t fs_write(int fd,const void *buf,size_t len);
 
 _RegSet* do_syscall(_RegSet *r) {
   uintptr_t a[4];
@@ -49,6 +49,9 @@ _RegSet* do_syscall(_RegSet *r) {
 	  case SYS_write:
 		  SYSCALL_ARG1(r) = fs_write(SYSCALL_ARG2(r),(void *)SYSCALL_ARG3(r),SYSCALL_ARG4(r));
 		  break;
+//	  case SYS_brk:
+//		  SYSCALL_ARG1(r) = sys_brk((void *)SYSCALL_ARG2(r));
+//		  break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
