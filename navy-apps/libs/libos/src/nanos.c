@@ -29,10 +29,11 @@ int _write(int fd, void *buf, size_t count){
   return _syscall_(SYS_write,fd,(uintptr_t)buf,count);
 }
 
+extern uint32_t end;
 uint32_t pb = (uint32_t)&end;
 void *_sbrk(intptr_t increment){
 	uint32_t pb1 = pb;
-	if(_syscall_(SYS_brk,pb + increment,0,0) == 0){
+	if(_syscall_(SYS_brk,(uint32_t)pb + increment,0,0) == 0){
 	pb += increment;
 	return (void *) pb1;
 	}
