@@ -38,8 +38,7 @@ static inline uintptr_t sys_close(uintptr_t fd) {
 }
 
 static inline uintptr_t sys_brk(uintptr_t new_brk) {
-  mm_brk((uint32_t)new_brk);
-  return 1;
+  return mm_brk((uint32_t)new_brk);
 }
 
 
