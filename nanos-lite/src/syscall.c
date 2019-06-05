@@ -12,8 +12,9 @@ static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t 
 
 static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
 	Log("1");
-	uintptr_t i = 0;
+	uintptr_t i = -1;
 	if(fd == 1 || fd == 2){
+		i++;
 		for(;len>0;len--){
 			_putc(((char*)buf)[i]);
 			i++;
