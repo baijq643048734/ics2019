@@ -11,7 +11,6 @@ static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t 
 }
 
 static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
-	Log("1");
 	uintptr_t i = -1;
 	if(fd == 1 || fd == 2){
 		i++;
@@ -20,6 +19,7 @@ static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
 			i++;
 		}
 	}
+	Log("1");
   return i;
 }
 
@@ -55,7 +55,7 @@ _RegSet* do_syscall(_RegSet *r) {
 		  _halt(SYSCALL_ARG2(r));
 		  break;
 	  case SYS_write:
-		  SYSCALL_ARG1(r) = fs_write(SYSCALL_ARG2(r),(void*)SYSCALL_ARG3(r),SYSCALL_ARG4(r));
+		  SYSCALL_ARG1(r) = sys_write(SYSCALL_ARG2(r),SYSCALL_ARG3(r),SYSCALL_ARG4(r));
 		  break;
 	  case SYS_brk:
 		  Log("2");
