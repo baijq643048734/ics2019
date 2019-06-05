@@ -26,8 +26,7 @@ int _open(const char *path, int flags, mode_t mode) {
 }
 
 int _write(int fd, void *buf, size_t count){
-//  return _syscall_(SYS_write,fd,(uintptr_t)buf,count);
-	_exit(SYS_write);
+  return _syscall_(SYS_write,fd,(uintptr_t)buf,count);
 }
 
 extern char _end;
