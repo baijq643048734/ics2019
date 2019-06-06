@@ -32,6 +32,6 @@ int main() {
 
   uint32_t entry = loader(NULL,"/bin/text");
   ((void (*)(void))entry)();
-
+	Log("1");
   panic("Should not reach here");
 }
