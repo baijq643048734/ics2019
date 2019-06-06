@@ -14,16 +14,16 @@ static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t 
 }
 
 static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
-	uintptr_t i = -1;
-	if(fd == 1 || fd == 2){
-		i++;
-		for(;len>0;len--){
-			_putc(((char*)buf)[i]);
-			i++;
-		}
-	}
-	Log("1");
-  return i;
+//	uintptr_t i = -1;
+//	if(fd == 1 || fd == 2){
+//		i++;
+//		for(;len>0;len--){
+//			_putc(((char*)buf)[i]);
+//			i++;
+//		}
+//	}
+//	Log("1");
+  return (uintptr_t)fs_write(fd,(void *)buf,len);
 }
 
 static inline uintptr_t sys_read(uintptr_t fd, uintptr_t buf, uintptr_t len) {
