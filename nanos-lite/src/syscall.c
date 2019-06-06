@@ -31,7 +31,7 @@ static inline uintptr_t sys_read(uintptr_t fd, uintptr_t buf, uintptr_t len) {
 }
 
 static inline uintptr_t sys_lseek(uintptr_t fd, uintptr_t offset, uintptr_t whence) {
-  return (uintptr_t)fs_lseek(fd, offset, whence);
+  return fs_lseek(fd, offset, whence);
 }
 
 static inline uintptr_t sys_close(uintptr_t fd) {
