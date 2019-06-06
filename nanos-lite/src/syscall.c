@@ -10,7 +10,7 @@ extern int fs_close(int fd);
 int mm_brk(uint32_t new_brk);
 
 static inline uintptr_t sys_open(uintptr_t pathname, uintptr_t flags, uintptr_t mode) {
-  return 1;
+  return (uintptr_t)fs_open((void*)pathname,flags,mode);
 }
 
 static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
@@ -27,21 +27,19 @@ static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
 }
 
 static inline uintptr_t sys_read(uintptr_t fd, uintptr_t buf, uintptr_t len) {
-  TODO();
-  return 1;
+  return (uintptr_t)fs_read(fd,(void *)buf,len);
 }
 
 static inline uintptr_t sys_lseek(uintptr_t fd, uintptr_t offset, uintptr_t whence) {
-  return fs_lseek(fd, offset, whence);
+  return (uintptr_t)fs_lseek(fd, offset, whence);
 }
 
 static inline uintptr_t sys_close(uintptr_t fd) {
-  TODO();
-  return 1;
+  return (uintptr_t)fs_close(fd);
 }
 
 static inline uintptr_t sys_brk(uintptr_t new_brk) {
-  return mm_brk((uint32_t)new_brk);
+  return (uintptr_t)mm_brk((uint32_t)new_brk);
 }
 
 
@@ -62,6 +60,18 @@ _RegSet* do_syscall(_RegSet *r) {
 	  case SYS_brk:
 //		  Log("2");
 		  SYSCALL_ARG1(r) = sys_brk(SYSCALL_ARG2(r));
+		  break;
+	  case SYS_open:
+		  SYSCALL_ARG1(r) = sys_open(SYSCALL_ARG2(r),SYSCALL_ARG3(r),SYSCALL_ARG4(r));
+		  break;
+	  case SYS_read:
+		  SYSCALL_ARG1(r) = sys_read(SYSCALL_ARG2(r),SYSCALL_ARG3(r),SYSCALL_ARG4(r));
+		  break;
+	  case SYS_close:
+		  SYSCALL_ARG1(r) = sys_close(SYSCALL_ARG2(r));
+		  break;
+	  case SYS_lseek:
+		  SYSCALL_ARG1(r) = fs_lseek(SYSCALL_ARG2(r),SYSCALL_ARG3(r),SYSCALL_ARG4(r));
 		  break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
