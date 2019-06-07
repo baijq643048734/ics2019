@@ -138,12 +138,15 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
   if(width == 4){				//32
 	  *dest = (int32_t) *src1;
+	  return ;
   }
   else if(width == 2){			//16
 	  *dest = (int32_t)(int16_t) *src1;
+	  return ;
   }
   else if(width == 1){
 	  *dest = (int32_t)(int8_t) *src1;
+	  return ;
   }
   else{
 	  assert(0);
@@ -189,8 +192,19 @@ static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  rtl_eq0(&t1,result);
-  rtl_set_ZF(&t1);
+  int zf = 0;
+  if(width == 1){
+	  zf = (*result & 0x000000ff) | 0;
+  }
+  else if(width == 2){
+	  zf = (*result & 0x0000ffff) | 0;
+  }
+  else if(width == 4){
+	  zf = (*result & 0xffffffff) | 0;
+  }
+  cpu.eflags.ZF = (zf == 0) ? 1:0;
+//  rtl_eq0(&t1,result);
+//  rtl_set_ZF(&t1);
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
