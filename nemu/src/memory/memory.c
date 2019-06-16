@@ -68,7 +68,7 @@ paddr_t page_translate(vaddr_t addr,bool is_write){
 		pte.accessed = 1;
 		pte.dirty = is_write ? 1 : pte.dirty;
 		addr = (pte.page_frame << 12) | (addr &PAGE_MASK);
-		Log("Addr : 0x%08x",addr);
+//		Log("Addr : 0x%08x",addr);
 	}
 	return addr;
 }
