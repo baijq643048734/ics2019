@@ -29,7 +29,7 @@ paddr_t page_translate(vaddr_t addr,bool is_write);
 #define IF_CROSS_PAGE(addr,len) ((((addr)+(len)-1) & -PAGE_MASK)!=((addr)& -PAGE_MASK))
 
 uint32_t vaddr_read(vaddr_t addr, int len) {
-//	if(cpu.cr0.paging){
+	if(cpu.cr0.paging){
 		if(IF_CROSS_PAGE(addr,len)){
 			assert(0);
 		}
@@ -37,9 +37,9 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 			paddr_t paddr = page_translate(addr,false);
 			return paddr_read(paddr,len);
 		}
-//	}
-//	else
-//		return paddr_read(addr,len);
+	}
+	else
+		return paddr_read(addr,len);
 }
 
 void vaddr_write(vaddr_t addr, int len, uint32_t data) {
