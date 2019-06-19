@@ -55,8 +55,8 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 			paddr_write(paddr,len,data);
 		}
 	}
-//	else
-//		paddr_write(addr, len, data);
+	else
+		paddr_write(addr, len, data);
 //	paddr_t paddr = addr;
 //	if(cpu.cr0.paging) paddr = page_translate(addr,true);
 //	paddr_write(paddr,len,data);
