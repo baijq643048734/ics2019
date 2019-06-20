@@ -22,7 +22,7 @@ static inline uintptr_t sys_write(uintptr_t fd, uintptr_t buf, uintptr_t len) {
 //			i++;
 //		}
 //	}
-	Log("1");
+//	Log("1");
   return (uintptr_t)fs_write(fd,(void *)buf,len);
 }
 
