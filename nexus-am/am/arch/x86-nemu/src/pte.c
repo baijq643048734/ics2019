@@ -81,28 +81,28 @@ void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-//  ustack.end = ustack.end - 4 * sizeof(int);
-//  int *p0 = ustack.end;
-//  p0[0] = p0[1] = p0[2] = p0[3] = 0;
+	ustack.end = ustack.end - 4 * sizeof(int);
+	int *p0 = ustack.end;
+	p0[0] = p0[1] = p0[2] = p0[3] = 0;
 
-  //_RegSet *ptr = (_RegSet*)ustack.end - 1;
+	_RegSet *ptr = (_RegSet*)ustack.end - 1;
 
-//  ptr->cs = 0x8;
-//  ptr->eip = (uintptr_t)entry;
-//  ptr->eflags = 0x2 | FL_IF;
-//  return ptr;
-	uint32_t *ptr = ustack.end;
-	for(int i = 0; i < 8; i++){
-		*ptr-- = 0x0;
-	}
-	*ptr-- = 0x2;
-	*ptr-- = 0x8;
-	*ptr-- = (uint32_t)entry;
-	*ptr-- = 0x0;
-	*ptr-- = 0x81;
+	ptr->cs = 0x8;
+	ptr->eip = (uintptr_t)entry;
+	ptr->eflags = 0x2 | FL_IF;
+	return ptr;
+//	uint32_t *ptr = ustack.end;
+//	for(int i = 0; i < 8; i++){
+//		*ptr-- = 0x0;
+//	}
+//	*ptr-- = 0x2;
+//	*ptr-- = 0x8;
+//	*ptr-- = (uint32_t)entry;
+//	*ptr-- = 0x0;
+//	*ptr-- = 0x81;
 
-	for(int i = 0; i < 8; i++){
-		*ptr-- = 0x0;
-	}
-	return (_RegSet *)ptr;
+//	for(int i = 0; i < 8; i++){
+//		*ptr-- = 0x0;
+//	}
+//	return (_RegSet *)ptr;
 }
