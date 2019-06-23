@@ -67,10 +67,10 @@ paddr_t page_translate(vaddr_t addr,bool is_write){
 	PTE pte;
 	if(cpu.cr0.protect_enable && cpu.cr0.paging){
 		pde.val = paddr_read((intptr_t)((cpu.cr3.page_directory_base<<12) | ((addr >> 22 ) & 0x3ff)<<2),4);
-	//	assert(pde.present);
+		assert(pde.present);
 		pde.accessed = 1;
 		pte.val = paddr_read((intptr_t)((pde.page_frame<<12) | ((addr>>12) &0x3ff)<<2),4);
-	//	assert(pte.present);
+		assert(pte.present);
 		pte.accessed = 1;
 		pte.dirty = is_write ? 1 : pte.dirty;
 		addr = (pte.page_frame << 12) | (addr & PAGE_MASK);
