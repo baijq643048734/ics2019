@@ -47,6 +47,9 @@ typedef union {
 			 uint32_t :20;
 		 };
 	}eflags;
+
+	bool INTR;
+
 	struct {
 		uint16_t limit;
 		uint32_t base;
